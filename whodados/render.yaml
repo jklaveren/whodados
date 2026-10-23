@@ -1,0 +1,41 @@
+# =================================================================
+# Configuracao para deploy na Render.com (FastAPI backend)
+# LOCAL: whodados/render.yaml
+# Uso: `render api create` ou importar via webhook
+# =================================================================
+services:
+  - type: web
+    name: whodados-api
+    env: python
+    plan: free
+    build_command: pip install -r requirements.txt
+    start_command: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    directory: .
+    envVars:
+      - key: DATABASE_URL
+        description: "Connection string do Supabase/PostgreSQL"
+        exampleValue: "postgresql://user:password@host:5432/dbname"
+        from: supabase_connection_string
+      - key: DATA_SOURCE
+        value: database
+      # Lista separada por virgula (o backend faz split por ",").
+      # Inclui a URL de producao do Vercel (whodados-jet), a reservada
+      # (whodados) e o localhost para o frontend em desenvolvimento.
+      - key: CORS_ORIGINS
+        value: "https://whodados-jet.vercel.app,https://whodados.vercel.app,http://localhost:3000"
+      - key: API_CACHE_TTL_SECONDS
+        value: "300"
+
+# =================================================================
+# Background worker (opcional) para sincronizacao de dados
+# =================================================================
+# services:
+#   - type: background_worker
+#     name: whodados-etl
+#     env: python
+#     plan: starter
+#     build_command: pip install -r requirements.txt -r pipeline/requirements-dev.txt
+#     start_command: python scripts/sync_data_to_db.py
+#     envVars:
+#       - key: DATABASE_URL
+#         from: supabase_connection_string

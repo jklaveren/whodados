@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+/* Tema por atributo em vez de prefers-color-scheme: a escolha e da pessoa,
+   nao do sistema operacional. */
+@custom-variant dark (&:where([data-tema="dark"], [data-tema="dark"] *));
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+}
+
+/* No Tailwind v4 as utilidades apontam para variaveis do tema
+   (bg-white -> var(--color-white)). Redefinir os tokens aqui vira o app
+   inteiro sem alterar uma classe sequer nos componentes.
+
+   A escala slate e invertida: slate-50 (o fundo mais claro) passa a ser a
+   superficie mais escura, e slate-800 (o texto) passa a ser quase branco. */
+[data-tema="dark"] {
+  --background: #0b1120;
+  --foreground: #e2e8f0;
+
+  --color-white: #131c31;
+  --color-black: #f8fafc;
+
+  --color-slate-50: #0f1829;
+  --color-slate-100: #18233b;
+  --color-slate-200: #24314d;
+  --color-slate-300: #33415e;
+  --color-slate-400: #7d8ba6;
+  --color-slate-500: #94a3b8;
+  --color-slate-600: #b6c2d4;
+  --color-slate-700: #cbd5e1;
+  --color-slate-800: #e2e8f0;
+  --color-slate-900: #f1f5f9;
+
+  /* Acentos mais claros no escuro, pra manter contraste sobre fundo azul. */
+  --color-indigo-50: #1e1b4b;
+  --color-indigo-100: #272363;
+  --color-indigo-600: #818cf8;
+  --color-indigo-700: #a5b4fc;
+
+  --color-emerald-50: #052e2b;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #a7f3d0;
+
+  --color-red-50: #3f1d23;
+  --color-red-100: #4c1d24;
+  --color-red-600: #fca5a5;
+  --color-red-700: #fecaca;
+
+  --color-amber-50: #3b2f11;
+  --color-amber-100: #463716;
+  --color-amber-200: #5a4720;
+  --color-amber-600: #fcd34d;
+  --color-amber-700: #fde68a;
+  --color-amber-800: #fef3c7;
+
+  --color-green-50: #052e16;
+  --color-green-800: #86efac;
+
+  /* Controles nativos (select, input date, scrollbar) seguem o tema. */
+  color-scheme: dark;
+}
+
+html {
+  /* Evita o flash branco antes do React hidratar. */
+  background: var(--background);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, sans-serif;
+}

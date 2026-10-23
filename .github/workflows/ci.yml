@@ -1,0 +1,68 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    # Postgres efemero: parte da suite exercita o caminho real de banco, e
+    # sem DATABASE_URL o pool nao nasce. O schema se cria sozinho no boot
+    # (CREATE TABLE IF NOT EXISTS em db/config.py), entao nao ha' migration
+    # para rodar antes.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: whodados
+          POSTGRES_PASSWORD: whodados
+          POSTGRES_DB: whodados_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://whodados:whodados@localhost:5432/whodados_test
+      SECRET_KEY: chave-de-teste-do-ci
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r whodados/requirements.txt
+      # pytest nao entra no requirements de producao -- o Render nao precisa dele.
+      - run: pip install pytest
+
+      # Mesma funcao que o lifespan da aplicacao chama no boot. Como nao ha'
+      # migrations, e' isto que cria as 36 tabelas no banco do CI.
+      - name: Criar o schema
+        working-directory: whodados
+        run: python -c "from backend.db.config import ensure_tables_exist; ensure_tables_exist()"
+
+      - run: python -m pytest whodados/backend/tests -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: whodados/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: whodados/frontend/package-lock.json
+      - run: npm ci
+      - run: npx tsc --noEmit

@@ -1,0 +1,2 @@
+*.csv filter=lfs diff=lfs merge=lfs -text
+data_extraction/output/subset_rs_final_completo.csv filter=lfs diff=lfs merge=lfs -text

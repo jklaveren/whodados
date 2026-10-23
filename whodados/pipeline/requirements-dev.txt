@@ -1,0 +1,18 @@
+# =================================================================
+# Dependencias do pipeline de extracao (ETL) - WhoDados
+# LOCAL: whodados/pipeline/requirements-dev.txt
+# Instalar com: pip install -r whodados/pipeline/requirements-dev.txt
+# =================================================================
+pandas>=2.0.0
+requests>=2.31.0
+# psycopg2-binary necessario para o pipeline escrever no Supabase
+psycopg2-binary>=2.9.9
+# sqlalchemy necessario para o pandas.DataFrame.to_sql() em sync_data_to_db.py
+SQLAlchemy>=2.0.0
+# google-cloud-bigquery: fonte alternativa via BigQuery (pipeline_bigquery.py)
+# -- usada so quando BD_BILLING_PROJECT_ID estiver configurado. Cliente oficial
+# em vez do pacote "basedosdados" porque o read_sql dele faz login interativo
+# (abre navegador) por padrao -- nao funciona num runner sem tela como o
+# GitHub Actions. Client direto usa a service account (ADC) sem interacao.
+google-cloud-bigquery>=3.11.0
+db-dtypes>=1.0.0

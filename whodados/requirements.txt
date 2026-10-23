@@ -1,0 +1,4 @@
+# Fonte unica: backend/requirements.txt.
+# O render.yaml instala este arquivo; duplicar a lista fazia os dois
+# divergirem (faltavam anthropic, twilio e pywebpush aqui).
+-r backend/requirements.txt

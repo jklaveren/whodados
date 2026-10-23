@@ -1,0 +1,18 @@
+﻿# WhoDados Backend 2.0 Dependencies
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.9.0
+pydantic-settings>=2.5.0
+psycopg2-binary>=2.9.10
+python-jose[cryptography]>=3.3.0
+cryptography>=43.0.0
+passlib[bcrypt]>=1.7.4
+bcrypt==4.0.1  # pin: passlib 1.7.4 quebra com bcrypt>=4.1 (AttributeError bcrypt.__about__)
+python-multipart>=0.0.12
+pandas>=2.2.3
+numpy>=1.26.0
+python-dotenv>=1.0.0
+anthropic>=0.40.0
+pywebpush>=1.14.0  # Web Push (PWA) -- avisos no celular via VAPID, sem FCM/APNs
+google-auth>=2.30.0  # Gmail API (service account + delegacao no dominio)
+requests>=2.31.0

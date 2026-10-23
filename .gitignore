@@ -1,0 +1,113 @@
+# =================================================================
+# .gitignore — WhoDados
+# =================================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Dados locais (nunca commitar)
+*.db
+*.sqlite
+*.sqlite3
+alfa_novo_persist.db
+
+# Dados de extracao (muito grandes)
+data_extraction/raw/
+data_extraction/out/
+!data_extraction/raw/.gitkeep
+!data_extraction/out/.gitkeep
+whodados/pipeline/raw/
+whodados/pipeline/out/
+!whodados/pipeline/raw/.gitkeep
+!whodados/pipeline/out/.gitkeep
+
+# Ambientes
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
+.env.production
+*.log
+
+# Node (frontend)
+web/node_modules/
+web/.next/
+web/out/
+whodados/frontend/node_modules/
+whodados/frontend/.next/
+whodados/frontend/out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Supabase
+supabase/.branches/
+supabase/config.toml
+
+# Deploy
+.vercel
+
+# Legado (Streamlit) - dados extraidos, muito grandes, nunca commitar
+LegadoStream/data_extraction/output/
+
+# Legado (Streamlit) - scratch/debug
+LegadoStream/*_out.txt
+LegadoStream/check.txt
+LegadoStream/validacao_resultado.txt
+build6.out
+
+# Build artifact extraviado (Next.js)
+whodados/.next/
+
+# Legado (Streamlit) - nao versionar, mantido so localmente
+LegadoStream/
+CREDENCIAIS_LOGIN.txt
+whodados/CREDENCIAIS_LOGIN.txt
+
+# Credenciais GCP/BigQuery - nunca commitar (a service account fica em
+# C:/whodados/, fora do repo; o pipeline_bigquery.py le via env local)
+*bigquery*.json
+whodados-bigquery-*.json
+*service-account*.json
+service_account*.json
+credentials.json
+TODO.md
+
+# Log operacional: ruidoso, por execucao, nunca versionado. O registro que
+# (*.log acima nao cobre logs/sessoes/*.md nem logs/*.jsonl.)
+logs/*
+!logs/README.md
+!logs/.gitkeep
+
+# Terraform (nunca commitar estado nem cache de providers)
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Docs operacionais com dados de cliente — local apenas, nunca publicar
+
+# Registro do que a limpeza de e-mail removeu: dado pessoal (CNPJ, razao,
+# e-mail) de dezenas de milhares de pessoas. Fica local, nunca no repositorio.
+emails_removidos/
+
+# Propostas geradas: saem do script, nao se versionam
+Proposta*.pdf
